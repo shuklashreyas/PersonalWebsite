@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const modules = import.meta.glob('../../content/writing/*.{md,mdx}', { eager: true });
+const items = Object.entries(modules).map(([path, mod]) => ({ path, ...mod }));
+---
+<Layout title="Writing — Shreyas">
+  <div slot="nav"><Nav /></div>
+
+  <section>
+    <h1 class="text-3xl font-semibold mb-6">Writing</h1>
+    <div class="space-y-6">
+      {items.map(item => (
+        <article class="prose">
+          <h2><a href={item.url || item.path.replace('/src/pages','').replace(/\.mdx?$/,'')}>{item.frontmatter.title}</a></h2>
+          <p class="text-muted">{item.frontmatter.excerpt}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <div slot="footer"><Footer /></div>
+</Layout>

@@ -1,0 +1,144 @@
+---
+import '../styles/global.css';
+const { title = 'Personal Website', description = '' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="/favicon.ico" />
+    <style>
+      /* small reset to keep layout breathing */
+      :root { color-scheme: light dark; }
+    </style>
+  </head>
+  <body class="min-h-screen bg-bg dark:bg-slate-900 text-text dark:text-slate-100">
+    <div class="dna-background" aria-hidden="true">
+      <div class="dna">
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+        <div class="link"><div></div><div></div><div></div><div></div></div>
+      </div>
+    </div>
+
+    <div class="graphic-element" aria-hidden="true">
+      <canvas id="graphic-canvas" role="img" aria-hidden="true"></canvas>
+    </div>
+
+    <div class="mx-auto px-6 lg:px-8 container site-content">
+      <header class="pt-8">
+        <slot name="nav" />
+      </header>
+      <main class="py-12">
+        <slot />
+      </main>
+      <footer class="pt-6">
+        <slot name="footer" />
+      </footer>
+    </div>
+
+    <script type="module">
+      // Animated rotating graphic element
+      (function(){
+        const gCanvas = document.getElementById('graphic-canvas');
+        if (!gCanvas) return;
+        if (window.matchMedia('(max-width: 768px)').matches) return;
+
+        function setupGCanvas(c) {
+          const dpr = window.devicePixelRatio || 1;
+          const rect = c.getBoundingClientRect();
+          c.width = Math.max(1, Math.floor(rect.width * dpr));
+          c.height = Math.max(1, Math.floor(rect.height * dpr));
+          c.style.width = rect.width + 'px';
+          c.style.height = rect.height + 'px';
+          return dpr;
+        }
+
+        function drawGraphic(ctx, w, h, t) {
+          ctx.clearRect(0, 0, w, h);
+          const centerX = w / 2;
+          const centerY = h / 2;
+          const color = 'rgba(122,162,247,0.4)';
+          ctx.strokeStyle = color;
+          ctx.lineCap = 'round';
+
+          // Draw 3 rotating rings
+          for (let ring = 0; ring < 3; ring++) {
+            const baseRadius = 30 + ring * 25;
+            const rotation = (t * 0.08) + (ring * (Math.PI * 2 / 3));
+            ctx.lineWidth = Math.max(1, w / 280);
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, baseRadius, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Draw spinning dots on each ring
+            const dotRadius = 5;
+            const dotAngle = rotation;
+            const dotX = centerX + Math.cos(dotAngle) * baseRadius;
+            const dotY = centerY + Math.sin(dotAngle) * baseRadius;
+            ctx.fillStyle = 'rgba(122,162,247,0.6)';
+            ctx.beginPath();
+            ctx.arc(dotX, dotY, dotRadius, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+
+        let dpr = setupGCanvas(gCanvas);
+        const gCtx = gCanvas.getContext('2d');
+        gCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        let rafId = null;
+        let start = performance.now();
+
+        function render(now) {
+          const t = (now - start) / 1000;
+          const rect = gCanvas.getBoundingClientRect();
+          const neededW = Math.max(1, Math.floor(rect.width * dpr));
+          const neededH = Math.max(1, Math.floor(rect.height * dpr));
+          if (gCanvas.width !== neededW || gCanvas.height !== neededH) {
+            dpr = setupGCanvas(gCanvas);
+            gCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          }
+          drawGraphic(gCtx, gCanvas.width / dpr, gCanvas.height / dpr, t);
+          rafId = requestAnimationFrame(render);
+        }
+        rafId = requestAnimationFrame(render);
+        const ro = new ResizeObserver(() => {
+          setupGCanvas(gCanvas);
+          gCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        });
+        ro.observe(gCanvas.parentElement);
+        window.addEventListener('beforeunload', () => {
+          if (rafId) cancelAnimationFrame(rafId);
+          ro.disconnect();
+        });
+      })();
+    </script>
+  </body>
+</html>

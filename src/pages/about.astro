@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+<Layout title="About — Shreyas">
+  <div slot="nav"><Nav /></div>
+
+  <article class="prose prose-lg max-w-none">
+    <h1>About</h1>
+    <p>I am an engineer and writer working across software engineering, machine learning, games, and computational biology. I care about clear thinking, reproducibility, and long-form explanations.</p>
+    <h2>Interests</h2>
+    <ul>
+      <li>Building robust systems and libraries</li>
+      <li>Explaining complex ideas with clarity</li>
+      <li>Interactive demos and reproducible research</li>
+    </ul>
+  </article>
+
+  <div slot="footer"><Footer /></div>
+</Layout>

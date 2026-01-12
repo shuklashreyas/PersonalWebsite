@@ -1,0 +1,12 @@
+---
+const { frontmatter } = Astro.props;
+---
+<article class="card card-accent py-4">
+  <h3 class="text-lg font-semibold mb-1">{frontmatter.title}</h3>
+  <p class="text-sm text-muted mb-3">{frontmatter.category} — {frontmatter.tech?.join(', ')}</p>
+  <p class="mb-3 text-sm">{frontmatter.description}</p>
+  <ul class="flex gap-4 text-sm">
+    {frontmatter.links?.github ? <li><a href={frontmatter.links.github}>Code</a></li> : null}
+    {frontmatter.links?.demo ? <li><a href={frontmatter.links.demo}>Demo</a></li> : null}
+  </ul>
+</article>

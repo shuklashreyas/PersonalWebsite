@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+<Layout title="Resume — Shreyas">
+  <div slot="nav"><Nav /></div>
+
+  <article class="prose max-w-none">
+    <h1>Shreyas</h1>
+    <p class="text-muted">Software engineer · Researcher · Writer</p>
+
+    <h2>Experience</h2>
+    <h3>Software Engineer</h3>
+    <p>Work on systems and ML infrastructure.</p>
+
+    <h2>Education</h2>
+    <p>Relevant degrees and dates.</p>
+
+    <a href="/resume.pdf" class="inline-block mt-6 px-4 py-2 rounded border">Download PDF</a>
+  </article>
+
+  <div slot="footer"><Footer /></div>
+</Layout>

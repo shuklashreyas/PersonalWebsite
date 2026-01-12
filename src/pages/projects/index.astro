@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const modules = import.meta.glob('../../content/projects/*.md', { eager: true });
+const projects = Object.values(modules).map(m => m.frontmatter).sort((a,b)=> (a.title > b.title ? 1 : -1));
+---
+<Layout title="Projects — Shreyas">
+  <div slot="nav"><Nav /></div>
+
+  <section>
+    <h1 class="text-3xl font-semibold mb-6">Projects</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {projects.map(p => (
+        <ProjectCard frontmatter={p} />
+      ))}
+    </div>
+  </section>
+
+  <div slot="footer"><Footer /></div>
+</Layout>

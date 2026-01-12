@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+// Using CSS-only subtle animation for the hero to avoid React dependency
+import ProjectCard from '../components/ProjectCard.astro';
+
+const projectFiles = Object.values(import.meta.glob('../content/projects/*.md', { eager: true }));
+const featured = projectFiles.slice(0, 3).map(p => p.frontmatter);
+---
+<Layout title="Home — Shreyas" description="Work in SWE, ML/AI, Games, Computational Biology, writing, and academics">
+  <div slot="nav"><Nav /></div>
+
+  <section class="hero">
+    <div class="fade-in">
+      <h1>Systems thinking, applied in code and words.</h1>
+      <p class="lead">I design and build software and research tools across ML, computational biology, games, and systems—essential work presented with clarity and care.</p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="/projects" class="btn">Featured Projects</a>
+        <a href="/writing" class="btn btn-secondary">Writing</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-gap">
+    <div class="flex items-baseline justify-between">
+      <h2 class="text-2xl font-semibold">Featured Projects</h2>
+      <p class="text-sm text-muted">Curated selection — a concise window into ongoing work.</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+      {featured.map(p => (
+        <div class="featured-card">
+          <ProjectCard frontmatter={p} />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="text-2xl font-semibold mb-6">Writing</h2>
+    <p class="text-muted">Recent essay: <a href="/writing/essay-example">Thinking in Layers</a></p>
+  </section>
+
+  <section>
+    <div class="flex gap-4">
+      <a href="/resume" class="px-4 py-2 rounded bg-slate-900 text-white">Resume</a>
+      <a href="/contact" class="px-4 py-2 rounded border">Contact</a>
+    </div>
+  </section>
+
+  <div slot="footer"><Footer /></div>
+</Layout>

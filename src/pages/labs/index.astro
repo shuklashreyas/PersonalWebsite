@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const demos = [
+  { title: 'CellGrowth demo', href: 'https://example-streamlit-app-1.vercel.app', desc: 'Interactive simulation of cell growth models.' },
+  { title: 'ML Playground', href: 'https://example-streamlit-app-2.vercel.app', desc: 'Small demo of model interpretability tools.' }
+];
+---
+<Layout title="Labs — Shreyas">
+  <div slot="nav"><Nav /></div>
+
+  <section>
+    <h1 class="text-3xl font-semibold mb-6">Labs</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {demos.map(d=> (
+        <a href={d.href} class="card p-6 block hover:shadow-md" target="_blank" rel="noreferrer">
+          <h3 class="font-semibold">{d.title}</h3>
+          <p class="text-muted mt-2">{d.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <div slot="footer"><Footer /></div>
+</Layout>
